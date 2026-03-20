@@ -20,3 +20,6 @@ sudo ./aws/install
 
 echo "Installation completed successfully."
 
+# Install Docker
+sudo apt update
+sudo apt install docker.io -y
