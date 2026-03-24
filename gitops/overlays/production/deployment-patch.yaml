@@ -8,10 +8,13 @@ spec:
     spec:
       containers:
       - name: mario-container
+        securityContext:
+          runAsNonRoot: false
+          runAsUser: 0
         resources:
           requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
             memory: "256Mi"
             cpu: "500m"
-          limits:
-            memory: "512Mi"
-            cpu: "1000m"

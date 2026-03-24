@@ -7,8 +7,8 @@ namespace: production
 resources:
   - ../../base
 
-patches:
-  - path: deployment-patch.yaml
+patchesStrategicMerge:
+  - deployment-patch.yaml
 
 images:
   - name: mario-game
@@ -16,7 +16,7 @@ images:
 
 replicas:
   - name: mario-deployment
-    count: 3
+    count: 1
 
 configMapGenerator:
   - name: mario-config
