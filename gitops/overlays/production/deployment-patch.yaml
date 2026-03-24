@@ -6,11 +6,19 @@ metadata:
 spec:
   template:
     spec:
+      securityContext:
+        runAsNonRoot: false
+        runAsUser: 0
+        fsGroup: 0
       containers:
       - name: mario-container
         securityContext:
           runAsNonRoot: false
           runAsUser: 0
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: false
+          capabilities:
+            drop: []
         resources:
           requests:
             memory: "128Mi"
