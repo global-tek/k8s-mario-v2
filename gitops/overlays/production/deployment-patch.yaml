@@ -8,13 +8,13 @@ spec:
     spec:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 0
-        fsGroup: 0
+        runAsUser: 1000
+        fsGroup: 1000
       containers:
       - name: mario-container
         securityContext:
           runAsNonRoot: true
-          runAsUser: 0
+          runAsUser: 1000
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: false
           capabilities:
