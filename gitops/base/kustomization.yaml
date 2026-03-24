@@ -16,7 +16,7 @@ commonLabels:
 images:
   - name: mario-game
     newName: 145689194429.dkr.ecr.us-west-2.amazonaws.com/mario
-    newTag: latest  # Will be overridden by environment
+    newTag: v1.2.0  # Will be overridden by environment
 
 configMapGenerator:
   - name: mario-config
