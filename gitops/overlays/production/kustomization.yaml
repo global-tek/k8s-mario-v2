@@ -6,13 +6,14 @@ namespace: production
 
 resources:
   - ../../base
+  - canary.yaml
 
 patchesStrategicMerge:
   - deployment-patch.yaml
 
 images:
   - name: mario-game
-    newTag: v1.1.0
+    newTag: v1.1.1
 
 replicas:
   - name: mario-deployment
