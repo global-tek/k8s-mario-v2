@@ -78,6 +78,19 @@ resource "aws_iam_role_policy_attachment" "example-AmazonEC2ContainerRegistryRea
   role       = aws_iam_role.example1.name
 }
 
+resource "aws_launch_template" "eks_nodes" {
+  name_prefix            = "eks-node-cloud-"
+  update_default_version = true
+
+  tag_specifications {
+    resource_type = "instance"
+
+    tags = {
+      Name = "Node-cloud"
+    }
+  }
+}
+
 #create node group
 resource "aws_eks_node_group" "example" {
   cluster_name    = aws_eks_cluster.example.name
