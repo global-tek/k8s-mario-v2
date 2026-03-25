@@ -1,0 +1,14 @@
+# gitops/overlays/production/servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: mario-metrics
+  namespace: production
+spec:
+  selector:
+    matchLabels:
+      app: mario
+  endpoints:
+  - port: http
+    interval: 30s
+    path: /metrics  # If your app exposes metrics
