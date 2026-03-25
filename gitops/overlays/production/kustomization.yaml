@@ -17,7 +17,7 @@ images:
 
 replicas:
   - name: mario-deployment
-    count: 3
+    count: 1
 
 configMapGenerator:
   - name: mario-config
