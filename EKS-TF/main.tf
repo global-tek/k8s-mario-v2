@@ -103,6 +103,12 @@ resource "aws_eks_node_group" "example" {
     max_size     = 5
     min_size     = 1
   }
+
+    launch_template {
+    id      = aws_launch_template.eks_nodes.id
+    version = "$Latest"
+  }
+  
   instance_types = ["t3.large"]
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
