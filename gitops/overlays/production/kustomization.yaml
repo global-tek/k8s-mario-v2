@@ -13,7 +13,7 @@ patchesStrategicMerge:
 
 images:
   - name: mario-game
-    newTag: v1.2.0
+    newTag: v1.1.0
 
 replicas:
   - name: mario-deployment
