@@ -4,11 +4,13 @@ kind: ServiceMonitor
 metadata:
   name: mario-metrics
   namespace: production
+  labels:
+    release: istio  # CRITICAL: Matches your Prometheus operator selector
 spec:
   selector:
     matchLabels:
-      app: mario
+      app: mario    # Matches the label on your SERVICE
   endpoints:
-  - port: http
+  - port: http      # Ensure your Service.yaml has 'name: http'
     interval: 30s
     path: /metrics  # If your app exposes metrics
