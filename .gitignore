@@ -1,0 +1,6 @@
+.terraform*
+*.tfstate
+*.zip
+aws*
+kubectl
+istio*
