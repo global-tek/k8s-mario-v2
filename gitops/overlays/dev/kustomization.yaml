@@ -1,0 +1,22 @@
+# gitops/overlays/dev/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: dev
+
+bases:
+  - ../../base
+
+images:
+  - name: mario-game
+    newTag: dev-latest
+
+replicas:
+  - name: mario-deployment
+    count: 1
+
+configMapGenerator:
+  - name: mario-config
+    behavior: merge
+    literals:
+      - ENVIRONMENT=dev
