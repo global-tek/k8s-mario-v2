@@ -12,7 +12,7 @@ patches:
 
 images:
   - name: mario-game
-    newTag: v1.1.0  # Immutable tag
+    newTag: v1.0.0  # Immutable tag
 
 replicas:
   - name: mario-deployment
