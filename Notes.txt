@@ -1,0 +1,19 @@
+Policy 2: Block :latest Tag
+"This one checks the image field of every container. If the image ends with :latest or has no tag at all (which defaults to :latest), the deployment is rejected. This enforces our immutable tag requirement."
+
+Policy 3: Require Non-Root
+"Checks that the pod's security context has runAsNonRoot: true. If it's missing, the deployment is rejected."
+
+Step 3.3: Applying Constraints
+"Constraint Templates are the reusable logic. Constraints are instances that say 'apply this template to Deployments in the production and staging namespaces.' You might have the same template but different constraints — maybe dev allows :latest but production doesn't."
+
+Gatekeeper is the Kubernetes-native integration of OPA. It acts as an admission controller — it intercepts every request to the Kubernetes API (create, update, delete) and evaluates it against your policies before allowing it through.
+
+Why it exists: Kubernetes will happily let you deploy a container running as root, with no resource limits, using the :latest tag, and with no health checks. Kubernetes doesn't have opinions about best practices. Gatekeeper adds those opinions as enforceable policies. If a deployment violates a policy, the API rejects it — it never reaches the cluster.
+
+Why this is "shift-left": The term "shift-left" means catching problems earlier in the pipeline. Traditionally, security reviews happened at the end — after code was written, built, and deployed. With Gatekeeper, policies are enforced at admission time. A bad configuration never makes it into the cluster. Combined with CI pipeline scanning, you're catching issues at multiple points before they reach production.
+
+Module 4: Progressive Delivery with Flagger
+Tool: Istio (Service Mesh)
+What it is: Istio is a service mesh — a dedicated infrastructure layer that manages service-to-service communication. It works by injecting a sidecar proxy (Envoy) into every pod. All traffic flows through this proxy, giving Istio control over routing, security, and observability.
+Why we need it: Flagger (our canary deployment tool) needs the ability to split traffic between two versions of an application — for example, sending 90% of traffic to the current version and 10% to the new version. Kubernetes alone can't do percentage-based traffic splitting. Istio's VirtualService resource can, because it controls the Envoy proxies that route all traffic.
