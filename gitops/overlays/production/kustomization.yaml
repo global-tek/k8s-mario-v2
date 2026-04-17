@@ -1,0 +1,25 @@
+# gitops/overlays/production/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: production
+
+resources:
+  - ../../base
+
+patches:
+  - path: deployment-patch.yaml
+
+images:
+  - name: 145689194429.dkr.ecr.us-west-2.amazonaws.com/mario
+    newTag: v1.0.0  # Immutable tag
+
+replicas:
+  - name: mario-deployment
+    count: 3
+
+configMapGenerator:
+  - name: mario-config
+    behavior: merge
+    literals:
+      - ENVIRONMENT=production
