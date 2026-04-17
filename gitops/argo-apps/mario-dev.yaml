@@ -4,18 +4,38 @@ kind: Application
 metadata:
   name: mario-dev
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
+  
   source:
     repoURL: https://github.com/global-tek/k8s-mario-v2.git
-    targetRevision: develop  # Different branch for dev
+    targetRevision: main  # Different branch for dev
     path: gitops/overlays/dev
   destination:
     server: https://kubernetes.default.svc
     namespace: dev
+  
   syncPolicy:
     automated:
-      prune: true
-      selfHeal: true
+      prune: true      # Delete resources not in Git
+      selfHeal: true   # Auto-sync on drift detection
+      allowEmpty: false
     syncOptions:
       - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+
+  # Health assessment
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas  # Ignore if HPA is managing replicas
