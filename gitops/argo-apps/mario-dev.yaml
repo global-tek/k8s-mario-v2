@@ -1,0 +1,21 @@
+# gitops/argo-apps/mario-dev.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mario-dev
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/global-tek/k8s-mario-v2.git
+    targetRevision: develop  # Different branch for dev
+    path: gitops/overlays/dev
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
