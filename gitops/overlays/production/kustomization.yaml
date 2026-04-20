@@ -6,6 +6,7 @@ namespace: production
 
 resources:
   - ../../base
+  - canary.yaml
 
 patches:
   - path: deployment-patch.yaml

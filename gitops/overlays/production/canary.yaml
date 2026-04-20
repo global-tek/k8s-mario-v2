@@ -1,0 +1,55 @@
+# gitops/overlays/production/canary.yaml
+apiVersion: flagger.app/v1beta1
+kind: Canary
+metadata:
+  name: mario-canary
+  namespace: production
+spec:
+  # Target deployment
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: mario-deployment
+  
+  # Service configuration
+  service:
+    port: 80
+    targetPort: 80
+    name: mario-service
+    
+  # Progressive traffic shifting
+  analysis:
+    # Schedule interval
+    interval: 1m
+    
+    # Max traffic percentage routed to canary
+    threshold: 5
+    
+    # Number of checks before rollout
+    maxWeight: 50
+    
+    # Increment step percentage
+    stepWeight: 10
+    
+    # Metrics for validation
+    metrics:
+    - name: request-success-rate
+      thresholdRange:
+        min: 99
+      interval: 1m
+    
+    - name: request-duration
+      thresholdRange:
+        max: 500
+      interval: 1m
+    
+    # Webhooks — the load tester must already be installed (see Step 4.2).
+    # The load tester lives in the "test" namespace (kustomize tester hardcodes it).
+    # Use full FQDNs for all cross-namespace URLs; short names don't resolve.
+    webhooks:
+    - name: load-test
+      url: http://flagger-loadtester.test.svc.cluster.local/
+      timeout: 5s
+      metadata:
+        type: cmd
+        cmd: "hey -z 1m -q 10 -c 2 http://mario-service.production.svc.cluster.local/"
