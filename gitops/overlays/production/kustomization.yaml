@@ -5,22 +5,25 @@ kind: Kustomization
 namespace: production
 
 resources:
-  - ../../base
-  - canary.yaml
+- ../../base
+- canary.yaml
 
 patches:
-  - path: deployment-patch.yaml
+- path: deployment-patch.yaml
 
 images:
-  - name: 145689194429.dkr.ecr.us-west-2.amazonaws.com/mario
-    newTag: v1.2.0  # Immutable tag
+- name: 145689194429.dkr.ecr.us-west-2.amazonaws.com/mario
+  newTag: v1.2.0
+- name: mario-game
+  newName: 145689194429.dkr.ecr.us-west-2.amazonaws.com/mario
+  newTag: main-2f98521
 
 replicas:
-  - name: mario-deployment
-    count: 3
+- count: 3
+  name: mario-deployment
 
 configMapGenerator:
-  - name: mario-config
-    behavior: merge
-    literals:
-      - ENVIRONMENT=production
+- behavior: merge
+  literals:
+  - ENVIRONMENT=production
+  name: mario-config
